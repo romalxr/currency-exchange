@@ -1,12 +1,11 @@
--- Создание таблицы Currencies
+
 CREATE TABLE IF NOT EXISTS Currencies (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,           -- Айди валюты, автоинкремент, первичный ключ
-    Code VARCHAR(10) NOT NULL UNIQUE,               -- Код валюты (уникальный индекс)
-    FullName VARCHAR(100) NOT NULL,                 -- Полное имя валюты
-    Sign VARCHAR(10)                                -- Символ валюты
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Code VARCHAR(10) NOT NULL UNIQUE,
+    FullName VARCHAR(100) NOT NULL,
+    Sign VARCHAR(10)
 );
 
--- Пример данных для Currencies
 INSERT OR IGNORE INTO Currencies (Code, FullName, Sign) VALUES
 ('USD', 'United States Dollar', '$'),
 ('EUR', 'Euro', '€'),
@@ -14,7 +13,6 @@ INSERT OR IGNORE INTO Currencies (Code, FullName, Sign) VALUES
 ('GBP', 'British Pound', '£'),
 ('AUD', 'Australian Dollar', 'A$');
 
--- Создание таблицы ExchangeRates
 CREATE TABLE IF NOT EXISTS ExchangeRates (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
     BaseCurrencyId INTEGER NOT NULL,
@@ -25,7 +23,6 @@ CREATE TABLE IF NOT EXISTS ExchangeRates (
     FOREIGN KEY (TargetCurrencyId) REFERENCES Currencies(ID)
 );
 
--- Пример данных для ExchangeRates
 INSERT OR IGNORE INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate) VALUES
 (1, 2, 0.85),
 (2, 1, 1.176471),

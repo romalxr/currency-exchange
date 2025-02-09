@@ -6,13 +6,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class DatabaseInitializer {
+public class DBInitializer {
+
+    private static boolean inited = false;
 
     public static void initialize() {
 
+        if (inited) return;
+        inited = true;
+
         String schemaPath = "src/main/resources/init.sql";
 
-        try (Connection conn = DatabaseConnector.connect();
+        try (Connection conn = DBConnector.connect();
              Statement stmt = conn.createStatement()) {
 
             String schema = new String(Files.readAllBytes(Paths.get(schemaPath)));
@@ -26,7 +31,4 @@ public class DatabaseInitializer {
         }
     }
 
-    public static void main(String[] args) {
-        initialize();
-    }
 }
