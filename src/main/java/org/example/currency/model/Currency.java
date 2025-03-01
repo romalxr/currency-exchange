@@ -17,4 +17,11 @@ public class Currency {
     private String code;
 
     private String sign;
+
+    public String toJson() {
+        return String.format(
+                "{\n\"id\": %d, \n\"name\": \"%s\", \n\"code\": \"%s\", \n\"sign\": \"%s\"\n}",
+                this.getId(), this.getFullName(), this.getCode(), this.getSign()
+        );
+    }
 }

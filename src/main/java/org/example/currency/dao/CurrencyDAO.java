@@ -1,5 +1,6 @@
 package org.example.currency.dao;
 
+import org.example.currency.db.DBConnector;
 import org.example.currency.model.Currency;
 
 import java.sql.Connection;
@@ -83,4 +84,22 @@ public class CurrencyDAO {
                     resultSet.getString("sign"));
     }
 
+    public Currency findById(long currencyId) {
+        Currency currency = null;
+        String query = "SELECT ID, FullName, Code, Sign FROM currencies WHERE ID = ?";
+        try (Connection conn = DBConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setLong(1, currencyId);
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    currency = getCurrency(resultSet);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return currency;
+    }
 }

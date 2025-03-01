@@ -27,7 +27,12 @@ public class CurrencyServlet extends HttpServlet {
 
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
-        String json = toJson(currencyDAO.findByCode(currencyCode));
+        Currency currency = currencyDAO.findByCode(currencyCode);
+        if (currency == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Currency code not found");
+            return;
+        }
+        String json = currency.toJson();
         resp.getWriter().write(json);
     }
 
@@ -48,12 +53,5 @@ public class CurrencyServlet extends HttpServlet {
         currencyDAO.delete(currency);
         String json = "ok";
         resp.getWriter().write(json);
-    }
-
-    private String toJson(Currency currency) {
-        return String.format(
-                "{\"id\": %d, \"name\": \"%s\", \"code\": \"%s\", \"sign\": \"%s\"}",
-                currency.getId(), currency.getFullName(), currency.getCode(), currency.getSign()
-        );
     }
 }

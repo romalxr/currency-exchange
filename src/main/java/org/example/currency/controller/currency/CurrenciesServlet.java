@@ -21,8 +21,8 @@ public class CurrenciesServlet extends HttpServlet {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         List<Currency> currencies = currencyDAO.findAll();
-        List<String> currenciesJson = currencies.stream().map(this::toJson).toList();
-        String json = "[" + String.join(",", currenciesJson) + "]";
+        List<String> currenciesJson = currencies.stream().map(Currency::toJson).toList();
+        String json = "[\n" + String.join(",\n", currenciesJson) + "\n]";
         resp.getWriter().write(json);
     }
 
@@ -49,14 +49,7 @@ public class CurrenciesServlet extends HttpServlet {
 
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
-        String json = toJson(currencyDAO.save(currency));
+        String json = currencyDAO.save(currency).toJson();
         resp.getWriter().write(json);
-    }
-
-    private String toJson(Currency currency) {
-        return String.format(
-                "{\"id\": %d, \"name\": \"%s\", \"code\": \"%s\", \"sign\": \"%s\"}",
-                currency.getId(), currency.getFullName(), currency.getCode(), currency.getSign()
-        );
     }
 }

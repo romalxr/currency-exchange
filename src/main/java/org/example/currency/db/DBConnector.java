@@ -1,4 +1,4 @@
-package org.example.currency.dao;
+package org.example.currency.db;
 
 import java.sql.*;
 
