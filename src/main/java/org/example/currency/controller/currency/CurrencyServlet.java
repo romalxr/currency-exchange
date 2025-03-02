@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.currency.dao.CurrencyDAO;
 import org.example.currency.model.Currency;
+import org.example.currency.dto.ErrorDTO;
 
 import java.io.IOException;
 
@@ -19,17 +20,15 @@ public class CurrencyServlet extends HttpServlet {
 
         String pathInfo = req.getPathInfo();
         if (pathInfo == null || pathInfo.equals("/")) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Currency code is missing");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, ErrorDTO.from("Currency code is missing"));
             return;
         }
 
         String currencyCode = pathInfo.substring(1).toUpperCase();
 
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
         Currency currency = currencyDAO.findByCode(currencyCode);
         if (currency == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Currency code not found");
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, ErrorDTO.from("Currency code not found"));
             return;
         }
         String json = currency.toJson();
@@ -41,14 +40,12 @@ public class CurrencyServlet extends HttpServlet {
 
         String pathInfo = req.getPathInfo();
         if (pathInfo == null || pathInfo.equals("/")) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Currency code is missing");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, ErrorDTO.from("Currency code is missing"));
             return;
         }
 
         String currencyCode = pathInfo.substring(1).toUpperCase();
 
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
         Currency currency = currencyDAO.findByCode(currencyCode);
         currencyDAO.delete(currency);
         String json = "ok";

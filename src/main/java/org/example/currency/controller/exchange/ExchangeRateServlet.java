@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.currency.dao.CurrencyDAO;
 import org.example.currency.dao.ExchangeRateDAO;
 import org.example.currency.model.Currency;
+import org.example.currency.dto.ErrorDTO;
 import org.example.currency.model.ExchangeRate;
 import org.example.currency.utils.Utils;
 
@@ -24,35 +25,33 @@ public class ExchangeRateServlet extends HttpServlet {
 
         String pathInfo = req.getPathInfo();
         if (pathInfo == null || pathInfo.equals("/")) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Currency code is missing");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, ErrorDTO.from("Currency code is missing"));
             return;
         }
 
         String currencyCodes = pathInfo.substring(1).toUpperCase();
         if (currencyCodes.length() < 6) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Currency code is wrong");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, ErrorDTO.from("Currency code is wrong"));
             return;
         }
 
         String currencyCodeBase = currencyCodes.substring(0, 3);
         String currencyCodeTarget = currencyCodes.substring(3, 6);
 
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
         Currency currencyBase = currencyDAO.findByCode(currencyCodeBase);
         if (currencyBase == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Currency code not found");
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, ErrorDTO.from("Currency code not found"));
             return;
         }
         Currency currencyTarget = currencyDAO.findByCode(currencyCodeTarget);
         if (currencyTarget == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Currency code not found");
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, ErrorDTO.from("Currency code not found"));
             return;
         }
 
         ExchangeRate exchangeRate = exchangeRateDAO.findByBaseAndTarget(currencyBase, currencyTarget);
         if (exchangeRate == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Exchange rate not found");
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, ErrorDTO.from("Exchange rate not found"));
             return;
         }
         String json = exchangeRate.toJson();
@@ -73,19 +72,19 @@ public class ExchangeRateServlet extends HttpServlet {
 
         String rateString = Utils.getParameterFromBody(req,"rate");
         if (rateString == null) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters: rate");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, ErrorDTO.from("Missing parameters: rate"));
             return;
         }
 
         String pathInfo = req.getPathInfo();
         if (pathInfo == null || pathInfo.equals("/")) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Currency code is missing");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, ErrorDTO.from("Currency code is missing"));
             return;
         }
 
         String currencyCodes = pathInfo.substring(1).toUpperCase();
         if (currencyCodes.length() < 6) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Currency code is wrong");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, ErrorDTO.from("Currency code is wrong"));
             return;
         }
 
@@ -94,25 +93,23 @@ public class ExchangeRateServlet extends HttpServlet {
 
         Currency currencyBase = currencyDAO.findByCode(currencyCodeBase);
         if (currencyBase == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Currency code not found: " + currencyCodeBase);
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, ErrorDTO.from("Currency code not found: " + currencyCodeBase));
             return;
         }
         Currency currencyTarget = currencyDAO.findByCode(currencyCodeTarget);
         if (currencyTarget == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Currency code not found " + currencyCodeTarget);
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, ErrorDTO.from("Currency code not found " + currencyCodeTarget));
             return;
         }
 
         ExchangeRate exchangeRate = exchangeRateDAO.findByBaseAndTarget(currencyBase, currencyTarget);
         if (exchangeRate == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Exchange rate not found");
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, ErrorDTO.from("Exchange rate not found"));
             return;
         }
 
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
 
-        float rate = Float.parseFloat(rateString);
+        double rate = Double.parseDouble(rateString);
         exchangeRate.setRate(rate);
         exchangeRate = exchangeRateDAO.update(exchangeRate);
 

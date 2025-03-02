@@ -14,7 +14,7 @@ public class ExchangeRate {
 
     private Currency targetCurrency;
 
-    private float rate;
+    private Double rate;
 
     public String toJson() {
         return String.format(

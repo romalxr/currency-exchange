@@ -58,7 +58,7 @@ public class ExchangeRateDAO {
                 resultSet.getLong("id"),
                 currencyDAO.findById(resultSet.getLong("baseCurrencyId")),
                 currencyDAO.findById(resultSet.getLong("targetCurrencyId")),
-                resultSet.getFloat("rate"));
+                resultSet.getDouble("rate"));
     }
 
     public ExchangeRate save(ExchangeRate exchangeRate) {
@@ -68,7 +68,7 @@ public class ExchangeRateDAO {
 
             stmt.setLong(1, exchangeRate.getBaseCurrency().getId());
             stmt.setLong(2, exchangeRate.getTargetCurrency().getId());
-            stmt.setFloat(3, exchangeRate.getRate());
+            stmt.setDouble(3, exchangeRate.getRate());
 
             int changed = stmt.executeUpdate();
         } catch (Exception e) {
@@ -85,7 +85,7 @@ public class ExchangeRateDAO {
 
             stmt.setLong(1, exchangeRate.getBaseCurrency().getId());
             stmt.setLong(2, exchangeRate.getTargetCurrency().getId());
-            stmt.setFloat(3, exchangeRate.getRate());
+            stmt.setDouble(3, exchangeRate.getRate());
             stmt.setLong(4, exchangeRate.getId());
 
             stmt.execute();
