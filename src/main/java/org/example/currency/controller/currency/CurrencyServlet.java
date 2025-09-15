@@ -10,7 +10,7 @@ import org.example.currency.dto.ErrorDTO;
 
 import java.io.IOException;
 
-@WebServlet("/currency/*")
+@WebServlet("/api/currency/*")
 public class CurrencyServlet extends HttpServlet {
 
     private final CurrencyDAO currencyDAO = new CurrencyDAO();

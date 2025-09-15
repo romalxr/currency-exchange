@@ -13,7 +13,7 @@ import org.example.currency.model.ExchangeRate;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/exchangeRates")
+@WebServlet("/api/exchangeRates")
 public class ExchangeRatesServlet extends HttpServlet {
 
     private final ExchangeRateDAO exchangeRateDAO = new ExchangeRateDAO();
