@@ -1,0 +1,65 @@
+catalina-base old : C:\Users\user\.SmartTomcat\currency-exchange
+
+Проект
+http://94.183.189.171:8080/currency-exchange/
+
+Работа с сервером
+
+https://hostvds.com/control/servers/list
+Password:
+-
+Hostname:
+currency-exchange-rest-api
+SSH login command:
+ssh root@94.183.189.171
+
+Где я
+uname
+
+Проверить JAVA
+java -version
+
+Обновить список пакетов
+apt update
+
+найти пакет java где есть номер 11
+apt-cache search java | grep 11
+
+установить пакет
+apt install openjdk-11-jre-headless
+
+проверить занятые порты
+netstat -tulpn
+
+найти томкат
+apt-cache search tomcat
+
+установить томкат
+apt install tomcat10
+
+проверить статус сервиса
+systemctl status tomcat10.service
+
+проверить занятый порт
+netstat -tulpn
+
+скопировать файл на сервер
+scp ./target/currency_exchange.war root@94.183.189.171:~/
+scp currency-exchange.war root@94.183.189.171:~/
+scp currency-exchange.war root@94.183.189.171:/var/lib/tomcat10/webapps
+
+перейти в корень
+cd ~
+
+посмотреть файлы
+ls -la
+
+найти папку webapps
+find / -name "webapps"
+
+перемещаем архив
+mv currency-exchange.war /var/lib/tomcat10/webapps
+
+Добавить фильтр Cors
+CORS - cross-origin resource sharing
+res.setHeader("Access-Control-Allow-Origin", "*");

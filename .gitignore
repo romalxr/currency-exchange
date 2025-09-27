@@ -41,3 +41,6 @@ build/
 /.idea/
 /.smarttomcat/
 /db/currency.db
+/currency.db
+/pass.txt
+/src/main/resources/currency.db

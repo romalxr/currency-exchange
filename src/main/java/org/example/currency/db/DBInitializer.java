@@ -3,9 +3,10 @@ package org.example.currency.db;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DBInitializer {
 
     private static boolean initialized = false;
@@ -15,20 +16,22 @@ public class DBInitializer {
         if (initialized) return;
         initialized = true;
 
-        String schemaPath = "src/main/resources/init.sql";
+        String schemaPath = "/init.sql";
 
         try (Connection conn = DBConnector.connect();
-             Statement stmt = conn.createStatement()) {
-
-            String schema = new String(Files.readAllBytes(Paths.get(schemaPath)));
-
+             Statement stmt = conn.createStatement();
+             InputStream in =
+                     DBInitializer.class.getResourceAsStream(schemaPath)) {
+            if (in == null) {
+                throw new IllegalStateException("Файл init.sql не найден в resources");
+            }
+            String schema = new String(in.readAllBytes());
             stmt.executeUpdate(schema);
-            System.out.println("Database initialized successfully!");
+            log.info("Database initialized successfully!");
         } catch (IOException e) {
-            System.out.println("Error reading schema file: " + e.getMessage());
+            log.error("Error reading schema file: {}", e.getMessage(), e);
         } catch (Exception e) {
-            System.out.println("Failed to initialize database: " + e.getMessage());
+            log.error("Failed to initialize database: {}", e.getMessage(), e);
         }
     }
-
 }
