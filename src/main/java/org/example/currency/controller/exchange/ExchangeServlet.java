@@ -31,7 +31,7 @@ public class ExchangeServlet extends HttpServlet {
             return;
         }
 
-        Double amount = Double.parseDouble(amountString);
+        double amount = Double.parseDouble(amountString);
 
         Currency currencyBase = currencyDAO.findByCode(codeFrom);
         if (currencyBase == null) {
@@ -65,7 +65,7 @@ public class ExchangeServlet extends HttpServlet {
         }
 
         if (exchangeRate == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, ErrorDTO.from("ExchangeServlet rate not found"));
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, ErrorDTO.from("Exchange rate not found"));
             return;
         }
 

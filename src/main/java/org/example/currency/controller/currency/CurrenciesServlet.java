@@ -10,6 +10,7 @@ import org.example.currency.dto.ErrorDTO;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet("/api/currencies")
 public class CurrenciesServlet extends HttpServlet {
@@ -20,7 +21,7 @@ public class CurrenciesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         List<Currency> currencies = currencyDAO.findAll();
-        List<String> currenciesJson = currencies.stream().map(Currency::toJson).toList();
+        List<String> currenciesJson = currencies.stream().map(Currency::toJson).collect(Collectors.toList());
         String json = "[\n" + String.join(",\n", currenciesJson) + "\n]";
         resp.getWriter().write(json);
     }

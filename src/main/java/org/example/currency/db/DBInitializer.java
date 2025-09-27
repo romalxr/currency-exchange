@@ -8,12 +8,12 @@ import java.nio.file.Paths;
 
 public class DBInitializer {
 
-    private static boolean inited = false;
+    private static boolean initialized = false;
 
     public static void initialize() {
 
-        if (inited) return;
-        inited = true;
+        if (initialized) return;
+        initialized = true;
 
         String schemaPath = "src/main/resources/init.sql";
 

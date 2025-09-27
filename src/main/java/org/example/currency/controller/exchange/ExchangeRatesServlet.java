@@ -12,6 +12,7 @@ import org.example.currency.model.ExchangeRate;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet("/api/exchangeRates")
 public class ExchangeRatesServlet extends HttpServlet {
@@ -23,7 +24,7 @@ public class ExchangeRatesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         List<ExchangeRate> currencies = exchangeRateDAO.findAll();
-        List<String> currenciesJson = currencies.stream().map(ExchangeRate::toJson).toList();
+        List<String> currenciesJson = currencies.stream().map(ExchangeRate::toJson).collect(Collectors.toList());
         String json = "[\n" + String.join(",\n", currenciesJson) + "\n]";
         resp.getWriter().write(json);
     }
